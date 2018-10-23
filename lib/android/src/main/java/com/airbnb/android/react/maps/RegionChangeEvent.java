@@ -10,11 +10,23 @@ import com.google.android.gms.maps.model.LatLngBounds;
 public class RegionChangeEvent extends Event<RegionChangeEvent> {
   private final LatLngBounds bounds;
   private final boolean continuous;
+  private final double tilt;
+  private final double bearing;
 
   public RegionChangeEvent(int id, LatLngBounds bounds, boolean continuous) {
     super(id);
     this.bounds = bounds;
     this.continuous = continuous;
+    this.tilt = 0;
+    this.bearing = 0;
+  }
+
+  public RegionChangeEvent(int id, LatLngBounds bounds, double tilt, double bearing, boolean continuous) {
+    super(id);
+    this.bounds = bounds;
+    this.continuous = continuous;
+    this.tilt = tilt;
+    this.bearing = bearing;
   }
 
   @Override
@@ -39,6 +51,8 @@ public class RegionChangeEvent extends Event<RegionChangeEvent> {
     region.putDouble("longitude", center.longitude);
     region.putDouble("latitudeDelta", bounds.northeast.latitude - bounds.southwest.latitude);
     region.putDouble("longitudeDelta", bounds.northeast.longitude - bounds.southwest.longitude);
+    region.putDouble("tilt", tilt);
+    region.putDouble("bearing", tilt);
     event.putMap("region", region);
 
     rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);

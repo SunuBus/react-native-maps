@@ -332,11 +332,14 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
       @Override
       public void onCameraIdle() {
         LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
+        CameraPosition position = map.getCameraPosition();
+        double tilt = position.tilt;
+        double bearing = position.bearing;
         if ((cameraMoveReason != 0) &&
           ((cameraLastIdleBounds == null) ||
             LatLngBoundsUtils.BoundsAreDifferent(bounds, cameraLastIdleBounds))) {
           cameraLastIdleBounds = bounds;
-          eventDispatcher.dispatchEvent(new RegionChangeEvent(getId(), bounds, false));
+          eventDispatcher.dispatchEvent(new RegionChangeEvent(getId(), bounds, tilt, bearing, false));
         }
       }
     });
