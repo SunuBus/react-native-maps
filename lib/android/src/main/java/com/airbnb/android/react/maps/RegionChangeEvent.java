@@ -52,7 +52,7 @@ public class RegionChangeEvent extends Event<RegionChangeEvent> {
     region.putDouble("latitudeDelta", bounds.northeast.latitude - bounds.southwest.latitude);
     region.putDouble("longitudeDelta", bounds.northeast.longitude - bounds.southwest.longitude);
     region.putDouble("tilt", tilt);
-    region.putDouble("bearing", tilt);
+    region.putDouble("bearing", bearing);
     event.putMap("region", region);
 
     rctEventEmitter.receiveEvent(getViewTag(), getEventName(), event);
