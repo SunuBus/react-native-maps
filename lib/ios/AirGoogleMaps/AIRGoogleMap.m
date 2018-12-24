@@ -37,12 +37,14 @@
 #endif
 
 
-id regionAsJSON(MKCoordinateRegion region) {
+id regionAsJSON(MKCoordinateRegion region, GMSCameraPosition* position) {
   return @{
            @"latitude": [NSNumber numberWithDouble:region.center.latitude],
            @"longitude": [NSNumber numberWithDouble:region.center.longitude],
            @"latitudeDelta": [NSNumber numberWithDouble:region.span.latitudeDelta],
            @"longitudeDelta": [NSNumber numberWithDouble:region.span.longitudeDelta],
+           @"bearing": [NSNumber numberWithDouble:position.bearing],
+           @"tilt": [NSNumber numberWithDouble:position.viewingAngle],
            };
 }
 
@@ -280,7 +282,7 @@ id regionAsJSON(MKCoordinateRegion region) {
 
 - (void)didChangeCameraPosition:(GMSCameraPosition *)position {
   id event = @{@"continuous": @YES,
-               @"region": regionAsJSON([AIRGoogleMap makeGMSCameraPositionFromMap:self andGMSCameraPosition:position]),
+               @"region": regionAsJSON([AIRGoogleMap makeGMSCameraPositionFromMap:self andGMSCameraPosition:position], position),
                };
 
   if (self.onChange) self.onChange(event);
@@ -302,7 +304,7 @@ id regionAsJSON(MKCoordinateRegion region) {
 
 - (void)idleAtCameraPosition:(GMSCameraPosition *)position {
   id event = @{@"continuous": @NO,
-               @"region": regionAsJSON([AIRGoogleMap makeGMSCameraPositionFromMap:self andGMSCameraPosition:position]),
+               @"region": regionAsJSON([AIRGoogleMap makeGMSCameraPositionFromMap:self andGMSCameraPosition:position], position),
                };
   if (self.onChange) self.onChange(event);  // complete
 }
